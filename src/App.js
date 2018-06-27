@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Weapon} from './classes/Weapon'
-import { Form, Select , Input, InputNumber, Switch, Button, Table, Layout } from 'antd';
+import { Form, Select , Input, InputNumber, Switch, Button, Table, Layout, Icon } from 'antd';
+
 const FormItem = Form.Item
 const Option = Select.Option
 const { Header, Footer, Content } = Layout;
@@ -228,7 +229,10 @@ class App extends Component {
             </Content>
           </Layout>
           <Footer style={{ textAlign: 'center' }}>
-            <span role="img" aria-label="love">💗</span>
+
+          <a href="https://github.com/42tg/weapon_calculator_web" style={{color: 'black'}}> 
+              (<Icon type="github"/> => <Icon type="heart" />)
+            </a>
           </Footer>
           
         </Layout>
