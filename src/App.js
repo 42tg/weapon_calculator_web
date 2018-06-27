@@ -1,11 +1,124 @@
 import React, { Component } from 'react';
-
 import {Weapon} from './classes/Weapon'
+import { Form, Select , Input, InputNumber, Switch, Button, Table, Layout } from 'antd';
+const FormItem = Form.Item
+const Option = Select.Option
+const { Header, Footer, Content } = Layout;
+
+class CalculateForm extends Component{
+  internalSubmitHandler = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if(err) return
+      this.props.handleSubmit(values)
+    })
+  }
+
+  render(){
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 12 },
+      },
+    };
+    const { getFieldDecorator } = this.props.form;
+
+    return(
+      <Form onSubmit={this.internalSubmitHandler}>
+        <FormItem  {...formItemLayout} label="Waffenwürfel">
+          {getFieldDecorator('weaponDice', {
+              initialValue: "1W6",
+              rules: [{ required: true, message: "Der Waffenwürfel muss angegeben sein!" }],
+            })(
+                <Select>
+                  <Option value="1W6">1W6</Option>
+                  <Option value="2W6">2W6</Option>
+                  <Option value="3W6">3W6</Option>
+                  <Option value="1W10">1W10</Option>
+                  <Option value="2W10">2W10</Option>
+                </Select>
+          )}
+        </FormItem>
+        <FormItem   {...formItemLayout} label="Waffenschaden">
+          {getFieldDecorator('baseDamage', {
+              rules: [{ required: false }],
+            })(
+              <Input name="baseDamage" type="text" placeholder="" addonBefore="+" addonAfter="Basisschaden" />
+            )}
+        </FormItem>
+        <FormItem  {...formItemLayout} label="Waffengeschwindigkeit">
+        {getFieldDecorator('weaponSpeed', {
+            initialValue: 6,
+            min: 1,
+            max: 100,
+            rules: [{ required: true, message: "Waffengeschwindigkeit wird benötigt"}],
+          })(
+             <InputNumber label="Waffengeschwindigkeit" addonAfter="Ticks"/>
+          )}
+        </FormItem>
+        <FormItem  {...formItemLayout} label="Exakt">
+          {getFieldDecorator('exact', {
+              initialValue: "0",
+            })(
+                <Select>
+                  <Option value="0">Nein</Option>
+                  <Option value="1">1</Option>
+                  <Option value="2">2</Option>
+                  <Option value="3">3</Option>
+                  <Option value="4">4</Option>
+                </Select>
+          )}
+        </FormItem>
+        <FormItem  {...formItemLayout} label="Kritisch">
+          {getFieldDecorator('critical', {
+              initialValue: "0",
+            })(
+                <Select>
+                  <Option value="0">Nein</Option>
+                  <Option value="1">1</Option>
+                  <Option value="2">2</Option>
+                  <Option value="3">3</Option>
+                  <Option value="4">4</Option>
+                </Select>
+          )}
+        </FormItem>
+        <FormItem  {...formItemLayout} label="Scharf">
+          {getFieldDecorator('scharp', {
+              initialValue: "0",
+            })(
+                <Select>
+                  <Option value="0">Nein</Option>
+                  <Option value="1">1</Option>
+                  <Option value="2">2</Option>
+                  <Option value="3">3</Option>
+                  <Option value="4">4</Option>
+                </Select>
+          )}
+        </FormItem>
+        <FormItem  {...formItemLayout} label="Wuchtig" colon={true}>
+          {getFieldDecorator('massive', {
+              initialValue: false,
+            })(
+              <Switch/>
+          )}
+        </FormItem>
+        <FormItem  {...formItemLayout} label=" " colon={false}>
+          <Button type="primary" htmlType="submit"> Berechnen </Button>
+        </FormItem>
+    </Form>
+  )}
+}
+
+const CreatedCalculateForm = Form.create()(CalculateForm);
 
 class App extends Component {
   constructor(props){
     super(props)
-    this.state ={ 
+    this.state = { 
       lastCalculated: [],
       weaponDamage: "1W6",
       weaponSpeed:"6",
@@ -15,107 +128,110 @@ class App extends Component {
       exact:"0",
       sharp:"0",
       massive: false,
-      
-   
     }
   }
-  handleSubmit = (event) => { 
+
+  handleSubmit = function(values) { 
+    const state = this.state;
+    const prevWeapons = state.lastCalculated || []
     
-    const prevWeapons = this.state.lastCalculated
-    let weapon = new Weapon(this.state.weaponDamage)
-    weapon.setWeaponSpeed(this.state.weaponSpeed)
-    weapon.setCritical(this.state.critical)
+    let weapon = new Weapon(values.weaponDice)
+    weapon.setWeaponSpeed(values.weaponSpeed)
+    weapon.setCritical(values.critical)
     
-    weapon.setExact(this.state.exact)
-    weapon.setSharp(this.state.sharp)
-    weapon.setMassive(this.state.massive)
+    weapon.setExact(values.exact)
+    weapon.setSharp(values.scharp)
+    weapon.setMassive(values.massive)
     weapon.averageDamage(1000)
     prevWeapons.push(weapon)
-    this.setState({
-      lastCalculated: prevWeapons
-    })
-    event.preventDefault()
-  }
-  handleChange = function (event){
-    let object = {}
-    if(event.target.name === 'massive') event.target.value = event.target.checked
 
-    object[event.target.name] = event.target.value
-    this.setState(object)
+    this.setState(state)
   }
 
-  render() {
+  render() {    
     return (
       <div>
-        <header>
-          <h1>Welcome to Weapon Calculator</h1>
-        </header>
-        <div>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <select name="weaponDamage" id="weaponDamage" value={this.state.weaponDamage} onChange={this.handleChange.bind(this)}>
-                <option disabled>___W6____</option>
-                <option value="1W6">1W6</option>
-                <option value="2W6">2W6</option>
-                <option value="3W6">3W6</option>
-                <option disabled>___W10___</option>
-                <option value="1W10">1W10</option>
-                <option value="2W10">2W10</option>
-              </select>
-              <label htmlFor="fixDamage">+</label> <input name="fixDamage" id="fixDamage" value={this.state.fixDamage} type="text" placeholder="fix Damage" onChange={this.handleChange.bind(this)}/>
-            </div>
-            <div>
-              <label htmlFor="weaponSpeed">Waffengeschwindigkeit</label><input id="weaponSpeed" name="weaponSpeed" type="text" placeholder="WGS" value={this.state.weaponSpeed} onChange={this.handleChange.bind(this)}/>
-            </div>
-            <div>
-              <label htmlFor="exact">Exakt</label> 
-              <select id="exact" name="exact" onChange={this.handleChange.bind(this)} value={this.state.exact}>
-                <option value="0">Nein</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="critical">Kritisch</label>
-              <select id="critical" name="critical" onChange={this.handleChange.bind(this)} value={this.state.critical}>
-                <option value="0">Nein</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="sharp">Scharf</label>
-              <select id="sharp" name="sharp" onChange={this.handleChange.bind(this)} value={this.state.sharp}>
-                <option value="0">Nein</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="massive">Wuchtig ?</label> <input id="massive" name="massive" type="checkbox" value={this.state.massive} onChange={this.handleChange.bind(this)}/>  
-            </div>  
-            <div>
-              <button type="submit">Berechnen</button><button type="reset">Leeren</button>
-            </div>
-          </form>
-        </div>
+        <Layout>
+          <Header >
+            <h1 style={{ color: '#fff' }}>Welcome to Weapon Calculator</h1>
+          </Header>
+          <Layout>
+            <Content style={{ padding: '0 50px' }}>
 
-        <div>
-          <ul>
-            { this.state.lastCalculated.map((weapon, id) => {
-              return(
-                <li key={id}> {weapon.toString()} - {weapon.lastCalculatedAverage}</li>
-              )
-            })}
-          </ul>
-        </div>
+            <div>
+              <CreatedCalculateForm handleSubmit={this.handleSubmit.bind(this)}/>
+            </div>
+
+            <div>
+              <Table columns={[
+                  {
+                    title: 'Schaden',
+                    dataIndex: 'weaponDamage',
+                    key: 'weaponDamage',
+                    filters:[ {text: '1W6', value: '1W6' }, {text: '2W6', value: '2W6' }, {text: '3W6', value: '3W6' }, {text: '1W10', value: '1W10' }, {text: '2W10', value: '2W10' }],
+                    onFilter: (value, record) => {
+                      return (record.weaponDamage === value)
+                    },
+                  },
+                  {
+                    title: 'WGS',
+                    dataIndex: 'weaponSpeed',
+                    key: 'weaponSpeed',
+                  },
+                  {
+                    title: 'Exact',
+                    dataIndex: 'exact',
+                    key: 'exact',
+                    render: text => ((text==='0') ? 'Nein' : text)
+                  },
+                  {
+                    title: 'Kritisch',
+                    dataIndex: 'critical',
+                    key: 'critical',
+                    render: text => ((text==='0') ? 'Nein' : text)
+                  },
+                  {
+                    title: 'Scharf',
+                    dataIndex: 'scharp',
+                    key: 'scharp',
+                    render: text => ((text==='0') ? 'Nein' : text)
+                  },
+                  {
+                    title: 'Wuchtig',
+                    dataIndex: 'massive',
+                    key: 'massive',
+                    filters:[ {text: 'Ja',value: true }, {text:'Nein', value:false}],
+                    render: text => ((text===true) ? 'Ja' : 'Nein'),
+                    onFilter: (value, record) => {
+                      return (record.massive === (value==="true"))
+                    },
+                  },
+                  {
+                    title: 'Durchschnittschaden',
+                    dataIndex: 'lastCalculatedAverage',
+                    key: 'lastCalculatedAverage',
+                    sorter: (a, b) => a.lastCalculatedAverage - b.lastCalculatedAverage
+                  }
+                ]} dataSource={this.state.lastCalculated.map((weapon, id) => {
+                  return {
+                    weaponDamage : weapon.dice.toString(),
+                    weaponSpeed : weapon.weaponSpeed,
+                    exact : weapon.exact,
+                    critical : weapon.critical,
+                    scharp : weapon.sharp,
+                    massive : weapon.massive,
+                    lastCalculatedAverage : weapon.lastCalculatedAverage,
+                    key : id
+                  }
+                })} />
+            </div>
+            </Content>
+          </Layout>
+          <Footer style={{ textAlign: 'center' }}>
+            <span role="img" aria-label="love">💗</span>
+          </Footer>
+          
+        </Layout>
       </div>
     );
   }

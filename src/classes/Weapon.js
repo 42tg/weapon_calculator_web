@@ -66,7 +66,7 @@ class Weapon {
                     if(additionalDice > roll) roll = additionalDice
                 }
             }
-            if(this.hasSharp() && (roll < this.sharp)) roll = this.sharp
+            if(this.hasSharp() && (roll < this.sharp)) roll = parseInt(this.sharp, 10)
             if(this.hasCritical() && (roll === this.dice.eyes)) roll = roll + this.critical
             sum += roll
         }
@@ -81,10 +81,11 @@ class Weapon {
         while((damage = generator.next()) && damage.done === false) {
             sum += damage.value;
         }
+        
         let result = (sum / numberOfTrys / this.weaponSpeed).toFixed(2);
+        
         this.lastCalculatedAverage = result
         return result
-        
     }
 
     toString = () => {

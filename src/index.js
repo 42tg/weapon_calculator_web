@@ -1,6 +1,7 @@
+import 'antd/dist/antd.css'
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'reset-css';
+
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
