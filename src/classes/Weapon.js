@@ -84,7 +84,7 @@ class Weapon {
         
         let result = (sum / numberOfTrys / this.weaponSpeed);
         
-        this.lastCalculatedAverage = result
+        this.lastCalculatedAverage = result.toFixed(2)
         return result
     }
 
