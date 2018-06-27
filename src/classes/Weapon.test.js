@@ -97,10 +97,8 @@ test('10. Sharp weapon', () => {
 })
 
 test('11. critical weapon', () => {
-    let weapon = new Weapon()
-    let dice = new Dice('2W20')
+    let weapon = new Weapon('2W20')
     weapon.setWeaponSpeed(1)
-    weapon.setDice(dice)
     weapon.setSharp(20)
     expect(weapon.sharp).toBe(20)
     weapon.setCritical(100)
