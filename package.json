@@ -1,5 +1,6 @@
 {
   "name": "weapon_calculator_web",
+  "homepage": "https://42tg.github.io/weapon_calculator_web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,6 +14,18 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "coverage": "react-scripts test --env=jsdom --coverage",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/components/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.1"
   }
 }
