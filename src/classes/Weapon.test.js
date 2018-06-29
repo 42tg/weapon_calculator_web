@@ -51,6 +51,12 @@ test('6. set Weapon Speed', () => {
     let weapon = new Weapon('2W20')
     weapon.setWeaponSpeed(1)
     expect(weapon.weaponSpeed).toBe(1)
+
+    function testFunc(){
+        weapon.setWeaponSpeed(0)
+    }
+    expect(testFunc).toThrowError()
+
 })
 
 test('7. Attack Generator', () => {
@@ -119,4 +125,9 @@ test('12. massive Bonus', () => {
         expect(bonus).toBeGreaterThanOrEqual(0)
         expect(bonus).toBeLessThanOrEqual(8)
     }
+})
+
+test('13. stringify', () => {
+    let weapon = new Weapon()
+    expect(weapon.toString()).toBe('1W6')
 })
