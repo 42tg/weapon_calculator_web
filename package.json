@@ -21,6 +21,7 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/components/*.{js,jsx}",
+      "src/**/classes/*.{js,jsx}",
       "!**/node_modules/**",
       "!**/vendor/**"
     ]
