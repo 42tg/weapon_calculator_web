@@ -130,4 +130,12 @@ test('12. massive Bonus', () => {
 test('13. stringify', () => {
     let weapon = new Weapon()
     expect(weapon.toString()).toBe('1W6')
+    weapon.setCritical(1)
+    expect(weapon.toString()).toBe('1W6 K1')
+    weapon.setSharp(1)
+    expect(weapon.toString()).toBe('1W6 K1 S1')
+    weapon.setExact(1)
+    expect(weapon.toString()).toBe('1W6 K1 S1 E1')
+    weapon.setMassive(true)
+    expect(weapon.toString()).toBe('1W6 K1 S1 E1 W')
 })
