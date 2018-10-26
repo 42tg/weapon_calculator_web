@@ -139,7 +139,7 @@ class App extends Component {
     const state = this.state;
     const prevWeapons = state.lastCalculated || []
 
-    let weapon = new Weapon(values.weaponDice)
+    let weapon = new Weapon(values.weaponDice+"+"+values.fixDamage)
     weapon.setWeaponSpeed(values.weaponSpeed)
     weapon.setCritical(values.critical)
 

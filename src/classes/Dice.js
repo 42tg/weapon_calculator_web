@@ -16,13 +16,12 @@ class Dice {
     roll = () => {
         const roll = (Math.floor(Math.random() * Math.floor(this.eyes - 1)) + 1)
         switch(this.modifier){
-            case '+':
-            return roll + this.static
             case '-':
             return roll - this.static
+            case '+':
+            default:
+            return roll + this.static
         }
-
-        return roll
     }
 
     toString = () => {
