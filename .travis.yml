@@ -4,8 +4,11 @@ node_js:
 cache:
   directories:
   - node_modules
+install:
+  - nvm install 10
+  - nvm use 10
+  - npm ci
 script:
-  - npm install
   - npm test -- --coverage # Include coverage when running tests
   - npm run build
 after_script: # Upload coverage reports

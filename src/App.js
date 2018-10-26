@@ -136,10 +136,12 @@ class App extends Component {
   }
 
   handleSubmit = function(values) {
+    console.log(values)
     const state = this.state;
     const prevWeapons = state.lastCalculated || []
 
-    let weapon = new Weapon(values.weaponDice+"+"+values.fixDamage)
+    console.log(values.weaponDice+"+"+(values.baseDamage || '0'))
+    let weapon = new Weapon(values.weaponDice+"+"+values.baseDamage ||0)
     weapon.setWeaponSpeed(values.weaponSpeed)
     weapon.setCritical(values.critical)
 
@@ -148,7 +150,6 @@ class App extends Component {
     weapon.setMassive(values.massive)
     weapon.averageDamage(1000)
     prevWeapons.push(weapon)
-
     this.setState(state)
   }
 
