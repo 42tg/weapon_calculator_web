@@ -57,7 +57,7 @@ class Weapon {
     }
 
     attack = () => {
-        let sum = 0 
+        let sum = 0
         for (let index = 0; index < this.dice.count; index++) {
             let roll = this.dice.roll()
             if(this.hasExact()){
@@ -81,21 +81,21 @@ class Weapon {
         while((damage = generator.next()) && damage.done === false) {
             sum += damage.value;
         }
-        
+
         let result = (sum / numberOfTrys / this.weaponSpeed);
-        
+
         this.lastCalculatedAverage = result.toFixed(2)
         return result
     }
 
     toString = () => {
-        return this.dice.toString() + (this.hasCritical() ? ' K' + this.critical : '') + (this.hasSharp() ? ' S' + this.sharp : '') + (this.hasExact() ? ' E' + this.exact : '') + (this.hasMassive() ? ' W' : '') 
+        return this.dice.toString() + (this.hasCritical() ? ' K' + this.critical : '') + (this.hasSharp() ? ' S' + this.sharp : '') + (this.hasExact() ? ' E' + this.exact : '') + (this.hasMassive() ? ' W' : '')
     }
 }
 
 function* AttackGenerator(weapon, numberOfAttacks) {
     for (let index = 0; index < numberOfAttacks; index++) {
-        yield weapon.attack()    
+        yield weapon.attack()
     }
 }
 

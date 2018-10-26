@@ -58,7 +58,7 @@ class CalculateForm extends Component{
             max: 100,
             rules: [{ required: true, message: "Waffengeschwindigkeit wird benötigt"}],
           })(
-             <InputNumber label="Waffengeschwindigkeit" addonAfter="Ticks"/>
+            <InputNumber label="Waffengeschwindigkeit" addonAfter="Ticks"/>
           )}
         </FormItem>
         <FormItem  {...formItemLayout} label="Exakt">
@@ -71,6 +71,7 @@ class CalculateForm extends Component{
                   <Option value="2">2</Option>
                   <Option value="3">3</Option>
                   <Option value="4">4</Option>
+                  <Option value="5">5</Option>
                 </Select>
           )}
         </FormItem>
@@ -84,6 +85,8 @@ class CalculateForm extends Component{
                   <Option value="2">2</Option>
                   <Option value="3">3</Option>
                   <Option value="4">4</Option>
+                  <Option value="5">5</Option>
+                  <Option value="6">6</Option>
                 </Select>
           )}
         </FormItem>
@@ -119,12 +122,12 @@ const CreatedCalculateForm = Form.create()(CalculateForm);
 class App extends Component {
   constructor(props){
     super(props)
-    this.state = { 
+    this.state = {
       lastCalculated: [],
       weaponDamage: "1W6",
       weaponSpeed:"6",
       fixDamage:"0",
-      
+
       critical:"0",
       exact:"0",
       sharp:"0",
@@ -132,14 +135,14 @@ class App extends Component {
     }
   }
 
-  handleSubmit = function(values) { 
+  handleSubmit = function(values) {
     const state = this.state;
     const prevWeapons = state.lastCalculated || []
-    
+
     let weapon = new Weapon(values.weaponDice)
     weapon.setWeaponSpeed(values.weaponSpeed)
     weapon.setCritical(values.critical)
-    
+
     weapon.setExact(values.exact)
     weapon.setSharp(values.scharp)
     weapon.setMassive(values.massive)
@@ -149,7 +152,7 @@ class App extends Component {
     this.setState(state)
   }
 
-  render() {    
+  render() {
     return (
       <div>
         <Layout>
@@ -230,11 +233,11 @@ class App extends Component {
           </Layout>
           <Footer style={{ textAlign: 'center' }}>
 
-          <a href="https://github.com/42tg/weapon_calculator_web" style={{color: 'black'}}> 
+          <a href="https://github.com/42tg/weapon_calculator_web" style={{color: 'black'}}>
               (<Icon type="github"/> => <Icon type="heart" />)
             </a>
           </Footer>
-          
+
         </Layout>
       </div>
     );
